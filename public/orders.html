@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0fdf4;
+            padding: 30px;
+        }
+        
+        h1{
+          text-align: center;
+        }
+        .order-container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #146356;
+        }
+
+        .order-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #146356;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #888;
+            font-size: 18px;
+        }
+
+        button.clear {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button.clear:hover {
+            background-color: #a93226;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="order-container">
+        <h1>Your Orders</h1>
+        <div id="orderList"></div>
+        <div id="totalCost" class="total"></div>
+        <button class="clear" onclick="clearOrders()">Clear Orders</button>
+    </div>
+    <script>
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+const orderList = document.getElementById('orderList');
+const totalCost = document.getElementById('totalCost');
+
+let total = 0;
+
+orders.forEach(item => {
+    const div = document.createElement('div');
+    div.classList.add('order-item');
+    div.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #ccc;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa fa-check-circle" style="color: green;"></i>
+                <h3 style="margin: 0;">✅<strong>${item.name}</strong></h3>
+            </div>
+            <p style="margin: 0; font-weight: bold;">₹${item.cost}</p>
+        </div>
+    `;
+    orderList.appendChild(div);
+    total += Number(item.cost);
+});
+
+totalCost.innerHTML = `<strong>Total Cost:</strong> ₹${total}`;
+
+function clearOrders() {
+    localStorage.removeItem('orders');
+    location.reload();
+}
+
+    </script>
+</body>
+
+</html>
